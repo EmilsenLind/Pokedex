@@ -44,6 +44,17 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         initAudio()
     }
     
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if segue.identifier == "DetailsVCSegue" {
+            if let detailsVC = segue.destination as? PokemonDetailVC {
+                if let poke = sender as? Pokemon {
+                    detailsVC.destinationPokemon = poke
+                }
+            }
+        }
+    }
+    
+    
     func initAudio() { // prepare audio for playing
         let path = Bundle.main.path(forResource: "music", ofType: "mp3")
         
@@ -106,7 +117,16 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
         }
     }
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        print("")
+       
+        var poke: Pokemon!
+        
+        if isInSeachMode {
+            
+            poke = filteredPokemonsArray[indexPath.row]
+        } else {
+            poke = pokemonsArray[indexPath.row]
+        }
+        performSegue(withIdentifier: "DetailsVCSegue", sender: poke)
     }
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
@@ -126,6 +146,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         return CGSize(width: 115, height: 115)
     }
+    
+   
    
     func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
         view.endEditing(true)
@@ -153,6 +175,8 @@ class ViewController: UIViewController, UICollectionViewDelegate, UICollectionVi
             collectionView.reloadData()
         }
     }
+    
+    
     
     
     func searchBarShouldBeginEditing(_ searchBar: UISearchBar) -> Bool {
