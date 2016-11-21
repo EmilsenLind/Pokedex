@@ -36,7 +36,7 @@ class Pokemon {
     private var _evolveName: String!
     
     private var _evolvePokeID: String!
-    
+
     var evolvePokeID: String {
         
         if _evolvePokeID == nil {
